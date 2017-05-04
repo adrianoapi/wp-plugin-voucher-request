@@ -1,10 +1,10 @@
 <?php
 /*
   Plugin Name: Request Voucher
-  Description: Plugi para pegar os cadastros de Voucher
+  Description: Plugin para pegar os cadastros de Voucher
   Version: 0.1
   Author: Evolutime
-  Author URI: https://www.evolutimeead.com.br/
+  Author URI: https://www.evolutime.com.br/
  */
 
 function voucher_register_table_results()
@@ -75,9 +75,9 @@ function voucher_register_table_results()
 function voucher_form_search()
 {
     global $wpdb;
-    $divulgador = $wpdb->get_results("SELECT * FROM divulgadores");
-    $cursos = $wpdb->get_results("SELECT * FROM cursos");
-    $unidades = $wpdb->get_results("SELECT * FROM unidades");
+    $divulgador = $wpdb->get_results("SELECT * FROM divulgadores ORDER BY nome ASC");
+    $cursos = $wpdb->get_results("SELECT * FROM cursos ORDER BY nome ASC");
+    $unidades = $wpdb->get_results("SELECT * FROM unidades ORDER BY nome ASC");
     # REQUEST POST
     $r_divulgador = isset($_POST['divulgador']) ? $_POST['divulgador'] : NULL;
     $r_curso = isset($_POST['curso']) ? $_POST['curso'] : NULL;
