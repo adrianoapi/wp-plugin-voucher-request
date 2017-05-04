@@ -11,7 +11,6 @@ function voucher_register_table_results()
 {
     global $wpdb;
     #$table_name = "{$wpdb->prefix}posts";
-    # 
     $curso = !empty($_POST['curso']) ? " AND cursos.id = " . $_POST['curso'] : NULL;
     $unidade = !empty($_POST['unidade']) ? ' AND unidades.id = ' . $_POST['unidade'] : NULL;
     $divulgador = !empty($_POST['divulgador']) ? " INNER JOIN divulgadores ON (clientes.divulgador_id = divulgadores.id AND clientes.divulgador_id = {$_POST['divulgador']})" : " LEFT JOIN divulgadores ON (clientes.divulgador_id = divulgadores.id)";
@@ -49,6 +48,7 @@ function voucher_register_table_results()
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
+                <label for="url"><?= "URL para ".  utf8_encode('divulgação') ?></label>
                 <input type="text" value="" id="url" class="form-control">
             </div>
         </div>
@@ -60,9 +60,12 @@ function voucher_register_table_results()
         var unidade = document.getElementById("unidade");
         var unidade_val = unidade.options[unidade.selectedIndex].value;
         var unidade_str = unidade.options[unidade.selectedIndex].text;
-        var url = "http://evolutime.com.br/cadastro/?unidade=" + unidade_str;
-        if (divulgador_val !== "") {
-            url += "&div=" + divulgador_val;
+        var url = "";
+        if (unidade_val !== "" && unidade_val !== "Todas") {
+            url = "http://evolutime.com.br/cadastro/?unidade=" + unidade_str;
+            if (divulgador_val !== "") {
+                url += "&div=" + divulgador_val;
+            }
         }
         document.getElementById('url').value = url;
     </script>
