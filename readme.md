@@ -1,9 +1,9 @@
 #WordPress Voucher Request Plugin
 
-Plugin que faz o Request de dados de cadastro do Voucher com opção de filtrageme crialação dinâmica de url para divulgaçã.
+Plugin que faz o Request de dados de cadastro do Voucher com opção de filtragem e criação dinâmica de url para divulgação.
 
 # Configuração
-## 1. Certifieque-se que as seguintes tabelas estejam na DB do WP, caso não, não funcionará;
+## 1. Certifique-se que as seguintes tabelas estejam na DB do WP, caso não, não funcionará;
 > [clientes]
 > [cursos]
 > [divulgadores]
