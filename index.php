@@ -45,6 +45,27 @@ function voucher_register_table_results()
         endforeach;
         ?>
     </table>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <input type="text" value="" id="url" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var divulgador = document.getElementById("divulgador");
+        var divulgador_val = divulgador.options[divulgador.selectedIndex].value;
+        var unidade = document.getElementById("unidade");
+        var unidade_val = unidade.options[unidade.selectedIndex].value;
+        var unidade_str = unidade.options[unidade.selectedIndex].text;
+        var url = "http://evolutime.com.br/cadastro/?unidade=" + unidade_str;
+        if (divulgador_val !== "") {
+            url += "&div=" + divulgador_val;
+        }
+        document.getElementById('url').value = url;
+    </script>
     <?php
 }
 
@@ -78,7 +99,7 @@ function voucher_form_search()
                     <select name="unidade" class="form-control" id="unidade">
                         <option value="">Todas</option>
                         <?php foreach ($unidades as $unidade): ?>
-                            <option value="<?= $unidade->id ?>" <?= $unidade->id == $r_unidade ? 'selected' : NULL ?>><?= $unidade->nome ?></option>
+                            <option value="<?= $unidade->id ?>" <?= $unidade->id == $r_unidade ? 'selected' : NULL ?>><?= $unidade->alias ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -96,12 +117,10 @@ function voucher_form_search()
             </div>
             <div class="col-md-1">
                 <label for="submit">&nbsp;</label>
-                <button type="submit" class="btn btn-default">Procurar</button>
+                <button type="submit" class="btn btn-default">filtrar</button>
             </div>
         </div>
     </form>
-
-
     <?php
 }
 
