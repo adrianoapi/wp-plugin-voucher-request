@@ -8,7 +8,7 @@
  */
 register_activation_hook(__FILE__, 'voucher_insert_page');
 register_activation_hook(__FILE__, 'voucher_create_table');
-register_uninstall_hook(__FILE__, 'voucher_insert_page_uninstall');
+#register_uninstall_hook(__FILE__, 'voucher_insert_page_uninstall');
 
 function voucher_insert_page_uninstall()
 {
@@ -16,6 +16,7 @@ function voucher_insert_page_uninstall()
         exit();
     global $wpdb;
     $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
+    delete_option("wp-plugin-voucher-request-master");
 }
 
 /**
