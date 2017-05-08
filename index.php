@@ -7,17 +7,27 @@
   Author URI: https://www.evolutime.com.br/
  */
 register_activation_hook(__FILE__, 'voucher_insert_page');
+register_activation_hook(__FILE__, 'voucher_create_table');
 register_uninstall_hook(__FILE__, 'voucher_insert_page_uninstall');
 
 function voucher_insert_page_uninstall()
 {
-    # if uninstall.php is not called by WordPress, die
-    if (!defined('WP_UNINSTALL_PLUGIN')) {
-        die;
-    }
+    if (!defined('WP_UNINSTALL_PLUGIN'))
+        exit();
     global $wpdb;
-    #$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}mytable");
-    #$wpdb->query("DELETE FORM {$wpdb->prefix}posts WHERE post_title = 'My post'");
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
+}
+
+/**
+ * Cria tabela
+ */
+function voucher_create_table()
+{
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . "voucher_data";
+    $create = "CREATE TABLE `lab_wp`.`{$table_name}` ( `id` INT NOT NULL AUTO_INCREMENT , `type` VARCHAR(20) NOT NULL , `parent_id` INT(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
+    $wpdb->query($create);
 }
 
 /**
@@ -25,6 +35,7 @@ function voucher_insert_page_uninstall()
  */
 function voucher_insert_page()
 {
+
     $my_post = array(
         'post_title' => 'My post',
         'post_content' => '[voucher_search] [voucher_results]',
