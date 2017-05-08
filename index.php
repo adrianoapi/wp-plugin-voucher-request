@@ -6,6 +6,36 @@
   Author: Evolutime
   Author URI: https://www.evolutime.com.br/
  */
+register_activation_hook(__FILE__, 'voucher_insert_page');
+register_uninstall_hook(__FILE__, 'voucher_insert_page_uninstall');
+
+function voucher_insert_page_uninstall()
+{
+    # if uninstall.php is not called by WordPress, die
+    if (!defined('WP_UNINSTALL_PLUGIN')) {
+        die;
+    }
+    global $wpdb;
+    #$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}mytable");
+    #$wpdb->query("DELETE FORM {$wpdb->prefix}posts WHERE post_title = 'My post'");
+}
+
+/**
+ * Cria objeto Post
+ */
+function voucher_insert_page()
+{
+    $my_post = array(
+        'post_title' => 'My post',
+        'post_content' => '[voucher_search] [voucher_results]',
+        'post_status' => 'publish',
+        'post_author' => get_current_user_id(),
+        'post_type' => 'page',
+    );
+
+    # Insira o post no banco de dados
+    wp_insert_post($my_post, '');
+}
 
 function voucher_register_table_results()
 {
@@ -48,7 +78,7 @@ function voucher_register_table_results()
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="url"><?= "URL para ".  utf8_encode('divulgação') ?></label>
+                <label for="url"><?= "URL para " . utf8_encode('divulgação') ?></label>
                 <input type="text" value="" id="url" class="form-control">
             </div>
         </div>
@@ -61,7 +91,7 @@ function voucher_register_table_results()
         var unidade_val = unidade.options[unidade.selectedIndex].value;
         var unidade_str = unidade.options[unidade.selectedIndex].text;
         var url = "";
-        if (unidade_val !== "" && unidade_val !== "Todas") {
+        if (unidade_val !== "" && unidade_str !== "Todas") {
             url = "http://evolutime.com.br/cadastro/?unidade=" + unidade_str;
             if (divulgador_val !== "") {
                 url += "&div=" + divulgador_val;
@@ -85,14 +115,14 @@ function voucher_form_search()
     ?>
     <form action="" method="post">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="tipo">Divulgador</label>
                     <select name="divulgador" class="form-control" id="divulgador">
                         <option value="">Todos</option>
                         <?php foreach ($divulgador as $divulgador): ?>
                             <option value="<?= $divulgador->id ?>" <?= $divulgador->id == $r_divulgador ? 'selected' : NULL ?>><?= $divulgador->nome ?></option>
-                        <?php endforeach; ?>
+    <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -103,7 +133,7 @@ function voucher_form_search()
                         <option value="">Todas</option>
                         <?php foreach ($unidades as $unidade): ?>
                             <option value="<?= $unidade->id ?>" <?= $unidade->id == $r_unidade ? 'selected' : NULL ?>><?= $unidade->alias ?></option>
-                        <?php endforeach; ?>
+    <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -114,7 +144,16 @@ function voucher_form_search()
                         <option value="">Todos</option>
                         <?php foreach ($cursos as $curso): ?>
                             <option value="<?= $curso->id ?>" <?= $curso->id == $r_curso ? 'selected' : NULL ?>><?= $curso->nome ?></option>
-                        <?php endforeach; ?>
+    <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="exportar">Exportar</label>
+                    <select name="exportar" class="form-control" id="exportar">
+                        <option value="0" selected><?= utf8_encode('Não') ?></option>
+                        <option value="1">Sim</option>
                     </select>
                 </div>
             </div>
