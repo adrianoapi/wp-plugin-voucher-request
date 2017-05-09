@@ -13,28 +13,11 @@ register_uninstall_hook(__FILE__, 'voucher_on_uninstall');
 function voucher_on_activation()
 {
     global $wpdb;
+    # Cria a tabela para armazenar id dos posts
     $table_name = $wpdb->prefix . "voucher_data";
     $create = "CREATE TABLE `{$table_name}` ( `id` INT NOT NULL AUTO_INCREMENT , `type` VARCHAR(20) NOT NULL , `parent_id` INT(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
     $wpdb->query($create);
-}
-
-function voucher_on_deactivation()
-{
-    global $wpdb;
-    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
-}
-
-function voucher_on_uninstall()
-{
-    #$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
-}
-
-/**
- * Cria objeto Post
- */
-function voucher_insert_page()
-{
-
+    # Cria o post e retorna a id
     $my_post = array(
         'post_title' => 'My post',
         'post_content' => '[voucher_search] [voucher_results]',
@@ -44,7 +27,22 @@ function voucher_insert_page()
     );
 
     # Insira o post no banco de dados
-    wp_insert_post($my_post, '');
+    $post_id = wp_insert_post($my_post, '');
+    # Inserte o id do post
+    $insert = "INSERT INTO `{$table_name}` (`id`, `type`, `parent_id`) VALUES (NULL, 'page', '{$post_id}')";
+    $wpdb->query($insert);
+}
+
+function voucher_on_deactivation()
+{
+    global $wpdb;
+    # Exlui a tabela de registro de post
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
+}
+
+function voucher_on_uninstall()
+{
+    #$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
 }
 
 function voucher_register_table_results()
