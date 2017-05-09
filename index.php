@@ -28,7 +28,7 @@ function voucher_on_activation()
 
     # Insira o post no banco de dados
     $post_id = wp_insert_post($my_post, '');
-    # Inserte o id do post
+    # Inserte o id do post criado
     $insert = "INSERT INTO `{$table_name}` (`id`, `type`, `parent_id`) VALUES (NULL, 'page', '{$post_id}')";
     $wpdb->query($insert);
 }
@@ -36,8 +36,12 @@ function voucher_on_activation()
 function voucher_on_deactivation()
 {
     global $wpdb;
+    $table_name = $wpdb->prefix . "voucher_data";
+    $table_posts = $wpdb->prefix . "posts";
+    # Exclui registro do post
+    $wpdb->query("DELETE FROM $table_posts WHERE post_title='My post'");
     # Exlui a tabela de registro de post
-    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
+    $wpdb->query("DROP TABLE IF EXISTS {$table_name}");
 }
 
 function voucher_on_uninstall()
