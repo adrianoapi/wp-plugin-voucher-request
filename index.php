@@ -6,29 +6,27 @@
   Author: Evolutime
   Author URI: https://www.evolutime.com.br/
  */
-register_activation_hook(__FILE__, 'voucher_insert_page');
-register_activation_hook(__FILE__, 'voucher_create_table');
-#register_uninstall_hook(__FILE__, 'voucher_insert_page_uninstall');
+register_activation_hook(__FILE__, 'voucher_on_activation');
+register_deactivation_hook(__FILE__, 'voucher_on_deactivation');
+register_uninstall_hook(__FILE__, 'voucher_on_uninstall');
 
-function voucher_insert_page_uninstall()
+function voucher_on_activation()
 {
-    if (!defined('WP_UNINSTALL_PLUGIN'))
-        exit();
-    global $wpdb;
-    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
-    delete_option("wp-plugin-voucher-request-master");
-}
-
-/**
- * Cria tabela
- */
-function voucher_create_table()
-{
-
     global $wpdb;
     $table_name = $wpdb->prefix . "voucher_data";
-    $create = "CREATE TABLE `lab_wp`.`{$table_name}` ( `id` INT NOT NULL AUTO_INCREMENT , `type` VARCHAR(20) NOT NULL , `parent_id` INT(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
+    $create = "CREATE TABLE `{$table_name}` ( `id` INT NOT NULL AUTO_INCREMENT , `type` VARCHAR(20) NOT NULL , `parent_id` INT(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
     $wpdb->query($create);
+}
+
+function voucher_on_deactivation()
+{
+    global $wpdb;
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
+}
+
+function voucher_on_uninstall()
+{
+    #$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}voucher_data");
 }
 
 /**
@@ -134,7 +132,7 @@ function voucher_form_search()
                         <option value="">Todos</option>
                         <?php foreach ($divulgador as $divulgador): ?>
                             <option value="<?= $divulgador->id ?>" <?= $divulgador->id == $r_divulgador ? 'selected' : NULL ?>><?= $divulgador->nome ?></option>
-    <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -145,7 +143,7 @@ function voucher_form_search()
                         <option value="">Todas</option>
                         <?php foreach ($unidades as $unidade): ?>
                             <option value="<?= $unidade->id ?>" <?= $unidade->id == $r_unidade ? 'selected' : NULL ?>><?= $unidade->alias ?></option>
-    <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -156,7 +154,7 @@ function voucher_form_search()
                         <option value="">Todos</option>
                         <?php foreach ($cursos as $curso): ?>
                             <option value="<?= $curso->id ?>" <?= $curso->id == $r_curso ? 'selected' : NULL ?>><?= $curso->nome ?></option>
-    <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
