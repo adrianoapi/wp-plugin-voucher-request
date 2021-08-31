@@ -1,0 +1,52 @@
+<style>
+    table {
+    margin: 0 auto;
+    width: 500px;
+    /* Para ver as bordas do formulário */
+    padding: 1em;
+    border: 1px solid #fff;
+    border-radius: 0.5em;
+}
+
+label {
+    display: inline-block;
+    width: 45px;
+    text-align: right;
+}
+
+input, textarea {
+    font: 1em sans-serif;
+    width: 600px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #999;
+}
+
+input:focus, textarea:focus {
+    border-color: #1ac6ff;
+}
+
+textarea {
+    vertical-align: top;
+    height: 16em;
+    resize: vertical;
+}
+
+</style>
+
+<center><h1>[@TITLE]</h1></center>
+
+<table>
+    <thead>
+        <tr>
+            <th>Moeda</th>
+            <th>Valor Compra</th>
+            <th>Valor Venda</th>
+            <th>Data</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        [@TBODY]
+       </tbody>
+</table>
